@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import questionSets from '../data/questions';
+import axios from 'axios';
 
 function OccasionQuestions() {
   const { occasion } = useParams();
@@ -12,11 +13,23 @@ function OccasionQuestions() {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    navigate('/result', { state: { occasion, formData } });
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post('http://localhost:8000/api/generate', {
+      occasion,
+      person_name: formData.person_name || 'Unknown',
+      details: formData
+    });
+
+    navigate('/result', { state: { result: response.data.result } });
+  } catch (error) {
+    console.error('Error generating toast:', error);
+    alert('Something went wrong. Try again!');
+  }
+};
+
 
   return (
     <div className="p-6 max-w-xl mx-auto">
