@@ -1,17 +1,17 @@
 from fastapi import APIRouter
 from backend.models.schemas import AnniversaryRequest, AnniversaryResponse
 from backend.services.generator import generate_greeting
+from backend.services.prompt_builder import build_prompt 
 
 router = APIRouter()
 
 @router.post("/generate", response_model=AnniversaryResponse)
 async def generate_ann(request: AnniversaryRequest):
     details = "\n".join(f"- {k}: {v}" for k, v in request.details.items())
-    prompt = (
-        f"Create a toast for {request.ann_couple_names} on the occasion of their anniversary.\n"
-        f"Here are the details:\n{details}\n"
-        f"Make it light, personal, and memorable."
-    )
+    prompt = build_prompt(
+    f"Create a speech for {request.couple_names} on their anniversary.",
+    request.details
+)
 
     toast_text = generate_greeting(prompt)
     return AnniversaryResponse(result=toast_text)

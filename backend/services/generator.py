@@ -35,4 +35,11 @@ def generate_greeting(prompt: str) -> str:
         return_full_text=False
     )
 
-    return output[0]['generated_text']
+    generated = output[0]["generated_text"]
+
+    # Trim at next <|system|> if present (optional post-process)
+    if "<|system|>" in generated:
+        generated = generated.split("<|system|>")[0].strip()
+
+    return generated
+
