@@ -1,5 +1,6 @@
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 import torch
+import re
 
 model_id = "meta-llama/Llama-3.1-8B-Instruct"
 
@@ -37,9 +38,6 @@ def generate_greeting(prompt: str) -> str:
 
     generated = output[0]["generated_text"]
 
-    # Trim at next <|system|> if present (optional post-process)
-    if "<|system|>" in generated:
-        generated = generated.split("<|system|>")[0].strip()
-
-    return generated
+    cleaned = re.sub(r"<\|.*?\|>", "", generated).strip()
+    return cleaned
 

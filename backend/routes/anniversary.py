@@ -5,7 +5,7 @@ from backend.services.prompt_builder import build_prompt
 
 router = APIRouter()
 
-@router.post("/generate", response_model=AnniversaryResponse)
+@router.post("", response_model=AnniversaryResponse)
 async def generate_ann(request: AnniversaryRequest):
     details = "\n".join(f"- {k}: {v}" for k, v in request.details.items())
     prompt = build_prompt(
@@ -13,5 +13,5 @@ async def generate_ann(request: AnniversaryRequest):
     request.details
 )
 
-    toast_text = generate_greeting(prompt)
-    return AnniversaryResponse(result=toast_text)
+    text = generate_greeting(prompt)
+    return AnniversaryResponse(result=text)

@@ -5,7 +5,7 @@ from backend.services.prompt_builder import build_prompt
 
 router = APIRouter()
 
-@router.post("/generate", response_model=ToastResponse)
+@router.post("", response_model=ToastResponse)
 async def generate_toast(request: ToastRequest):
     details = "\n".join(f"- {k}: {v}" for k, v in request.details.items())
     prompt = build_prompt(
@@ -13,5 +13,5 @@ async def generate_toast(request: ToastRequest):
     request.details
 )
 
-    toast_text = generate_greeting(prompt)
-    return ToastResponse(result=toast_text)
+    text = generate_greeting(prompt)
+    return ToastResponse(result=text)

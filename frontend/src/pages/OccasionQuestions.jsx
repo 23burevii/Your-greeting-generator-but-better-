@@ -37,8 +37,7 @@ function OccasionQuestions() {
 
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/api/generate', {
-        occasion,
+      const response = await axios.post(`http://localhost:8000/api/${occasion}`, {
         person_name: formData.person_name || 'Unknown',
         details: formData
       });
