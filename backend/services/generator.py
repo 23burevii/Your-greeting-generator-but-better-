@@ -1,8 +1,12 @@
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
+from huggingface_hub import login
+import os
 import torch
 import re
 
 model_id = "meta-llama/Llama-3.1-8B-Instruct"
+
+login(token=os.getenv("HUGGINGFACE_HUB_TOKEN"))
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = AutoModelForCausalLM.from_pretrained(
